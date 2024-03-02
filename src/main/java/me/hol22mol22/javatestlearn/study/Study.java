@@ -7,6 +7,9 @@ public class Study {
     private int limit;
 
     public Study(int limit){
+        if(limit < 0){
+            throw new IllegalArgumentException("limit 은 0이상이어야함");
+        }
         this.limit = limit;
     }
 

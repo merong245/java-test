@@ -39,6 +39,15 @@ class StudyTest {
         );
     }
 
+    @Test
+    @DisplayName("스터디 만들기 🍕 에러췍")
+    void create_test_throw() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
+
+        String message = e.getMessage();
+        assertEquals(message,"limit 은 0이상이어야함");
+    }
+
     @BeforeAll
     static void beforeAll() {
         System.out.println("beforeAll");
