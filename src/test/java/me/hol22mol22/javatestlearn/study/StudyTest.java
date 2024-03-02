@@ -27,9 +27,14 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
+    // Junit의 전략은 테스트간 의존성을 줄이기 위해 테스트마다 다른 인스턴스로 생성되어 각 테스트에서 value의 변화를 주어도 1로 사용된다.
+    int value = 1;
+
+
     @Test
     void create_under_score() {
         Study study = new Study(0);
+        System.out.println(value++);
         assertNotNull(study);
 
         System.out.println("create");
@@ -108,6 +113,7 @@ class StudyTest {
     @DisplayName("테스트 만들기 fast")
     void create_test_tag_fast() {
         System.out.println("im fast");
+        System.out.println(value++);
     }
 
     @SlowTest
@@ -121,6 +127,7 @@ class StudyTest {
     void create_test_with_displayName() {
         Study study = new Study(1);
         assertNotNull(study);
+        System.out.println(value++);
 
 
         assertAll(
