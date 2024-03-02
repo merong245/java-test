@@ -5,6 +5,12 @@ import me.hol22mol22.javatestlearn.SlowTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.converter.SimpleArgumentConverter;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
@@ -43,6 +49,29 @@ class StudyTest {
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(strings = {"날씨가","많이", "추웡"})
     void parameterized_test(String message){
+        System.out.println("message = " + message);
+    }
+
+    @DisplayName("반복 테스트, 정수")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @ValueSource(ints = {10, 20, 50})
+    void parameterized_test_with_int(@ConvertWith(StudyConverter.class) Study study){
+        System.out.println("message = " + study.getLimit());
+    }
+
+    static class StudyConverter extends SimpleArgumentConverter{
+
+        @Override
+        protected Object convert(Object o, Class<?> aClass) throws ArgumentConversionException {
+            assertEquals(Study.class, aClass, "Can Only Convert to Study");
+            return new Study(Integer.parseInt(o.toString()));
+        }
+    }
+
+    @DisplayName("반복 테스트, 다수 파라미터")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @CsvSource({"java, 10", ""})
+    void parameterized_test_with_cvs_source(String message){
         System.out.println("message = " + message);
     }
 
