@@ -2,6 +2,8 @@ package me.hol22mol22.javatestlearn.study;
 
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
+
 import static me.hol22mol22.javatestlearn.study.StudyStatus.DRAFT;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,6 +48,24 @@ class StudyTest {
 
         String message = e.getMessage();
         assertEquals(message,"limit 은 0이상이어야함");
+    }
+
+    @Test
+    @DisplayName("스터디 만들기 🍕 타임아웃 췍")
+    void create_test_timeout() {
+        assertTimeout(Duration.ofMillis(100), ()->{
+            new Study(10);
+            Thread.sleep(10);
+        });
+    }
+
+    @Test
+    @DisplayName("스터디 만들기 🍕 타임아웃 바로 췍")
+    void create_test_timeout_preemtively() {
+        assertTimeoutPreemptively(Duration.ofMillis(100), ()->{
+            new Study(10);
+            Thread.sleep(10);
+        });
     }
 
     @BeforeAll
