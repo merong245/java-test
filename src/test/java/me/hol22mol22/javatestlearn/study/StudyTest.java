@@ -10,7 +10,7 @@ class StudyTest {
 
     @Test
     void create_under_score() {
-        Study study = new Study();
+        Study study = new Study(0);
         assertNotNull(study);
 
         System.out.println("create");
@@ -27,12 +27,14 @@ class StudyTest {
     @Test
     @DisplayName("스터디 만들기 🍕")
     void create_test_with_displayName() {
-        Study study = new Study();
+        Study study = new Study(1);
         assertNotNull(study);
 
         assertEquals(DRAFT, study.getStatus(), () -> "스터디를 초기 값은 " + DRAFT);
 
         assertTrue(1<2);
+
+        assertTrue(study.getLimit() > 0, "스터디 참석 가능 인원은 최소 1명 이상");
     }
 
     @BeforeAll
