@@ -1,9 +1,11 @@
 package me.hol22mol22.javatestlearn.study;
 
 import me.hol22mol22.javatestlearn.FastTest;
+import me.hol22mol22.javatestlearn.FindSlowTestExtension;
 import me.hol22mol22.javatestlearn.SlowTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -17,6 +19,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Duration;
 
@@ -24,6 +27,7 @@ import static me.hol22mol22.javatestlearn.study.StudyStatus.DRAFT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@ExtendWith(FindSlowTestExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
@@ -33,7 +37,8 @@ class StudyTest {
 
     @Test
     @Order(1)
-    void create_under_score() {
+    void create_under_score() throws InterruptedException {
+        Thread.sleep(1000L);
         Study study = new Study(0);
         System.out.println(value++);
         assertNotNull(study);
