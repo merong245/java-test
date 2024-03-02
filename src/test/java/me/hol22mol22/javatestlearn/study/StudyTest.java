@@ -29,6 +29,20 @@ class StudyTest {
     }
 
     @Test
+    @DisplayName("테스트 만들기 fast")
+    @Tag("fast")
+    void create_test_tag_fast(){
+        System.out.println("im fast");
+    }
+
+    @Test
+    @DisplayName("테스트 만들기 slow")
+    @Tag("slow")
+    void create_test_tag_slow(){
+        System.out.println("im slow");
+    }
+
+    @Test
     @DisplayName("스터디 만들기 🍕")
     void create_test_with_displayName() {
         Study study = new Study(1);
