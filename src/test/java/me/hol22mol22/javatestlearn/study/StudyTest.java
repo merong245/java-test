@@ -64,7 +64,7 @@ class StudyTest {
         System.out.println("message = " + study.getLimit());
     }
 
-    @DisplayName("반복 테스트, 정수")
+    @DisplayName("반복 테스트, 다수 파라미터")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @CsvSource({"10, '자바스터디'", "20, '스프링"})
     void parameterized_test_with_csv(Integer limit, String name) {
@@ -72,7 +72,7 @@ class StudyTest {
         System.out.println(study);
     }
 
-    @DisplayName("반복 테스트, 정수")
+    @DisplayName("반복 테스트, 다수 파라미터")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @CsvSource({"10, '자바스터디'", "20, '스프링"})
     void parameterized_test_with_csv_using_aggregator(ArgumentsAccessor argumentsAccessor) {
@@ -80,7 +80,7 @@ class StudyTest {
         System.out.println(study);
     }
 
-    @DisplayName("반복 테스트, 정수")
+    @DisplayName("반복 테스트, 다수 파라미터 커스텀")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @CsvSource({"10, '자바스터디'", "20, '스프링"})
     void parameterized_test_with_csv_using_custom_aggregator(@AggregateWith(StudyAggregator.class) Study study) {
@@ -102,13 +102,6 @@ class StudyTest {
             assertEquals(Study.class, aClass, "Can Only Convert to Study");
             return new Study(Integer.parseInt(o.toString()));
         }
-    }
-
-    @DisplayName("반복 테스트, 다수 파라미터")
-    @ParameterizedTest(name = "{index} {displayName} message={0}")
-    @CsvSource({"java, 10", ""})
-    void parameterized_test_with_cvs_source(String message) {
-        System.out.println("message = " + message);
     }
 
     @FastTest
