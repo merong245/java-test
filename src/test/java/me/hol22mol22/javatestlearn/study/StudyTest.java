@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
     // Junit의 전략은 테스트간 의존성을 줄이기 위해 테스트마다 다른 인스턴스로 생성되어 각 테스트에서 value의 변화를 주어도 1로 사용된다.
@@ -33,6 +34,7 @@ class StudyTest {
 
 
     @Test
+    @Order(1)
     void create_under_score() {
         Study study = new Study(0);
         System.out.println(value++);
@@ -49,6 +51,7 @@ class StudyTest {
 
     }
 
+    @Order(2)
     @DisplayName("반복 테스트")
     @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
     void repeat_test_10(RepetitionInfo repetitionInfo) {
@@ -56,6 +59,7 @@ class StudyTest {
                 repetitionInfo.getTotalRepetitions());
     }
 
+    @Order(3)
     @DisplayName("반복 테스트, 파라미터")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(strings = {"날씨가", "많이", "추웡"})
@@ -63,6 +67,7 @@ class StudyTest {
         System.out.println("message = " + message);
     }
 
+    @Order(4)
     @DisplayName("반복 테스트, 정수")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(ints = {10, 20, 50})
