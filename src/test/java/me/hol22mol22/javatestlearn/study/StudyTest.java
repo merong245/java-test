@@ -1,5 +1,7 @@
 package me.hol22mol22.javatestlearn.study;
 
+import me.hol22mol22.javatestlearn.FastTest;
+import me.hol22mol22.javatestlearn.SlowTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
 
@@ -28,16 +30,15 @@ class StudyTest {
 
     }
 
-    @Test
+
+    @FastTest
     @DisplayName("테스트 만들기 fast")
-    @Tag("fast")
     void create_test_tag_fast(){
         System.out.println("im fast");
     }
 
-    @Test
+    @SlowTest
     @DisplayName("테스트 만들기 slow")
-    @Tag("slow")
     void create_test_tag_slow(){
         System.out.println("im slow");
     }
