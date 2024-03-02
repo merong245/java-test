@@ -4,6 +4,8 @@ import me.hol22mol22.javatestlearn.FastTest;
 import me.hol22mol22.javatestlearn.SlowTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
@@ -30,6 +32,19 @@ class StudyTest {
 
     }
 
+    @DisplayName("반복 테스트")
+    @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
+    void repeat_test_10(RepetitionInfo repetitionInfo){
+        System.out.println("test" + repetitionInfo.getCurrentRepetition() + "/" +
+                repetitionInfo.getTotalRepetitions());
+    }
+
+    @DisplayName("반복 테스트, 파라미터")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @ValueSource(strings = {"날씨가","많이", "추웡"})
+    void parameterized_test(String message){
+        System.out.println("message = " + message);
+    }
 
     @FastTest
     @DisplayName("테스트 만들기 fast")
