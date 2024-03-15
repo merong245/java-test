@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Duration;
@@ -38,23 +39,16 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
+@Testcontainers
 class StudyTest {
 
     // Junit의 전략은 테스트간 의존성을 줄이기 위해 테스트마다 다른 인스턴스로 생성되어 각 테스트에서 value의 변화를 주어도 1로 사용된다.
     int value = 1;
 
+    @Container
     static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer()
             .withDatabaseName("studytest");
 
-    @BeforeAll
-    static void beforeAll(){
-        postgreSQLContainer.start();
-    }
-    @AfterAll
-    static void afterAll(){
-        postgreSQLContainer.stop();
-
-    }
 
     @RegisterExtension
     static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
