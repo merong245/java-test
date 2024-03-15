@@ -20,7 +20,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Duration;
 
@@ -30,11 +35,26 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 //@ExtendWith(FindSlowTestExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class StudyTest {
 
     // Junit의 전략은 테스트간 의존성을 줄이기 위해 테스트마다 다른 인스턴스로 생성되어 각 테스트에서 value의 변화를 주어도 1로 사용된다.
     int value = 1;
 
+    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer()
+            .withDatabaseName("studytest");
+
+    @BeforeAll
+    static void beforeAll(){
+        postgreSQLContainer.start();
+    }
+    @AfterAll
+    static void afterAll(){
+        postgreSQLContainer.stop();
+
+    }
 
     @RegisterExtension
     static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
@@ -212,16 +232,6 @@ class StudyTest {
         System.out.println("JDK over 8");
     }
 
-
-    @BeforeAll
-    static void beforeAll() {
-        System.out.println("beforeAll");
-    }
-
-    @AfterAll
-    static void afterAll() {
-        System.out.println("afterAll");
-    }
 
     @BeforeEach
     void beforeEach() {
