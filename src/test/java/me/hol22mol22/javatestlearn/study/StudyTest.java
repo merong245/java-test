@@ -23,8 +23,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -45,6 +52,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @Testcontainers
+@ContextConfiguration(initializers = StudyTest.ContainerPropertyInitializer.class)
 class StudyTest {
 
     static Logger log = LoggerFactory.getLogger(StudyTest.class);
@@ -52,13 +60,22 @@ class StudyTest {
     // Junit의 전략은 테스트간 의존성을 줄이기 위해 테스트마다 다른 인스턴스로 생성되어 각 테스트에서 value의 변화를 주어도 1로 사용된다.
     int value = 1;
 
+    @Value("${container.port}") int port;
+
     @Container
     static GenericContainer postgreSQLContainer = new GenericContainer("postgres")
-//            .withExposedPorts(5432)             // 포트 노출
+            .withExposedPorts(5432)             // 포트 노출
             .withEnv("POSTGRES_DB", "studytest")       // 환경 변수 설정 ex) DB 이름
 //            .waitingFor(Wait.forHttp("/hello")) // 특정 요청이 가능할 때 등 기다렸다 테스트 실행
             ;
 
+    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
+        @Override
+        public void initialize(ConfigurableApplicationContext context) {
+            TestPropertyValues.of("container.port=" +postgreSQLContainer.getMappedPort(5432))
+                    .applyTo(context.getEnvironment());
+        }
+    }
 
     @RegisterExtension
     static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
@@ -247,6 +264,7 @@ class StudyTest {
     @BeforeEach
     void beforeEach() {
         System.out.println("Before Each");
+        System.out.println(port);
     }
 
 
